@@ -1,0 +1,26 @@
+// DMux na temelju address[14], koji moze biti 0 ili 1: ako je 0, uzima load0, ako je 1, uzima load1
+
+// Ako uzme load0, ide u prvi RAM16K i eventualno se upisuje nova vrijednost in, ovisno o tome na sto je bio postavljen load:
+// ako je load bio 0, ostaje stara vrijednost, ako je load bio 1, upisuje se nova vrijednost in
+
+// Ako uzme load0, ide u prvi RAM16K i eventualno se upisuje nova vrijednost in, ovisno o tome na sto je bio postavljen load:
+// ako je load bio 0, ostaje stara vrijednost, ako je load bio 1, upisuje se nova vrijednost in
+
+// Mux16 uzima dva 16-bitna zapisa (o1 i o2) i na temelju address[14] ispisuje out:
+// ako je address[14] bio 0, out ce biti o1, a ako je address[14] bio 1, out ce biti o2 
+//[1][1][0][0][1][0][0][1][1][1][0][0][0][1][1] [1]
+
+
+CHIP RAM32K{
+	IN in[16], address[15], load;
+	OUT out[16];
+	
+	PARTS:
+	DMux(in=load, sel=address[14], a=load0, b=load1);
+	
+	RAM16K(in=in, load=load0, address=address[0..13], out=o1);
+	RAM16K(in=in, load=load1, address=address[0..13], out=o2);
+	
+	Mux16(a=o1, b=o2, sel=address[14], out=out); 
+	
+}

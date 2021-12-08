@@ -1,0 +1,13 @@
+// Zelimo shiftati svaki bit za jedan ulijevo pa na mjestima [1..15] stavimo bitove [0..14] 
+// To ucinimo tako da primijenimo operaciju Or na svakom bitu jer Or(a a) = a
+// Na nulti bit postavimo False, tj 0
+
+
+CHIP BitShiftL{
+	IN in[16];
+	OUT out[16];
+	
+	PARTS:
+	Or16(a[1..15]=in[0..14], b[1..15]=in[0..14], a[0]=false, b[0]=false, out=out);
+}
+
