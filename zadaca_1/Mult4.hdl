@@ -1,0 +1,13 @@
+// Mnozenje s 4 je zbrajanje broja sa samim sobom 4 puta, tj zbrojimo x+x=2x pa to rjesenje opet zbrojimo sa samim sobom: 2x + 2x = 4x
+
+
+CHIP Mult4{
+	IN in[16];
+	OUT out[16];
+	
+	PARTS:
+	Add16(a=in, b=in, out=duplo);
+	Add16(a=duplo, b=duplo, out=out);
+}
+
+ 

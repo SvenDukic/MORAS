@@ -1,0 +1,11 @@
+// Dvojni komplement nekog broja racunamo tako da prebacimo sve nule u jedinice i obratno (primijenimo Not16), a zatim zbrojimo s 1
+
+
+CHIP TwosCompl{
+	IN in[16];
+	OUT out[16];
+	
+	PARTS:
+	Not16(in=in, out=komplement);
+	Add16(a=komplement, b[0]=true, b[1..15]=false, out=out);
+}

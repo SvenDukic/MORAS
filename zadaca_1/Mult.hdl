@@ -1,0 +1,79 @@
+// Uzimamo zadnji bit od b (b[0]), ako je on 0, u umnosku s brojem a on ce dati 0 (tj. false), a ako je 1, u umnosku ce dati broj a (operacija Mux)
+// Zatim shiftamo ulijevo broj a i nastavljamo mnoziti sa sljedecim bitom od b (b[1])
+// Mnozenje binarnih brojeva analogno je mnozenju dekadskih brojeva
+// BitShiftL radimo jer prilikom svakog mnozenja "ostavljamo" jedno mjesto kojeg nadopunimo brojem 0; ovdje na taj nacin broj a nadopunimo brojem 0
+// jer prilikom mnozenja s 0 cemo svakako dobiti 0
+// Postupak nastavljamo do zadnjeg bita, a rjesenja potom zbrojimo
+// Napomena 1: ovaj algoritam nece biti korektan u slucaju mnozenja vecih brojeva (jer bismo shiftanjem izgubili neke znamenke broja a)
+// Napomena 2: ovaj algoritam nece biti korektan ako u zbrajanju dobijemo broj koji zauzima vise od 16 bitova jer necemo moci zapisati sve
+// znamenke
+
+
+CHIP Mult{
+    IN a[16], b[16];
+    OUT out[16];
+	
+    PARTS:
+    Mux16(a=false, b=a, sel=b[0], out=z0);
+
+    BitShiftL(in=a, out=sh1);
+    Mux16(a=false, b=sh1, sel=b[1], out=z1);
+
+    BitShiftL(in=sh1, out=sh2);
+    Mux16(a=false, b=sh2, sel=b[2], out=z2);
+
+    BitShiftL(in=sh2, out=sh3);
+    Mux16(a=false, b=sh3, sel=b[3], out=z3);
+
+    BitShiftL(in=sh3, out=sh4);
+    Mux16(a=false, b=sh4, sel=b[4], out=z4);
+
+    BitShiftL(in=sh4, out=sh5);
+    Mux16(a=false, b=sh5, sel=b[5], out=z5);
+
+    BitShiftL(in=sh5, out=sh6);
+    Mux16(a=false, b=sh6, sel=b[6], out=z6);
+
+    BitShiftL(in=sh6, out=sh7);
+    Mux16(a=false, b=sh7, sel=b[7], out=z7);
+
+    BitShiftL(in=sh7, out=sh8);
+    Mux16(a=false, b=sh8, sel=b[8], out=z8);
+
+    BitShiftL(in=sh8, out=sh9);
+    Mux16(a=false, b=sh9, sel=b[9], out=z9);
+
+    BitShiftL(in=sh9, out=sh10);
+    Mux16(a=false, b=sh10, sel=b[10], out=z10);
+
+    BitShiftL(in=sh10, out=sh11);
+    Mux16(a=false, b=sh11, sel=b[11], out=z11);
+
+    BitShiftL(in=sh11, out=sh12);
+    Mux16(a=false, b=sh12, sel=b[12], out=z12);
+
+    BitShiftL(in=sh12, out=sh13);
+    Mux16(a=false, b=sh13, sel=b[13], out=z13);
+
+    BitShiftL(in=sh13, out=sh14);
+    Mux16(a=false, b=sh14, sel=b[14], out=z14);
+
+    BitShiftL(in=sh14, out=sh15);
+    Mux16(a=false, b=sh15, sel=b[15], out=z15);
+
+    Add16(a=z0, b=z1, out=prvi);
+    Add16(a=prvi, b=z2, out=drugi);
+    Add16(a=drugi, b=z3, out=treci);
+    Add16(a=treci, b=z4, out=cetvrti);
+    Add16(a=cetvrti, b=z5, out=peti);
+    Add16(a=peti, b=z6, out=sesti);
+    Add16(a=sesti, b=z7, out=sedmi);
+    Add16(a=sedmi, b=z8, out=osmi);
+    Add16(a=osmi, b=z9, out=deveti);
+    Add16(a=deveti, b=z10, out=deseti);
+    Add16(a=deseti, b=z11, out=jedanaesti);
+    Add16(a=jedanaesti, b=z12, out=dvanaesti);
+    Add16(a=dvanaesti, b=z13, out=trinaesti);
+    Add16(a=trinaesti, b=z14, out=cetrnaesti);
+    Add16(a=cetrnaesti, b=z15, out=out);
+}

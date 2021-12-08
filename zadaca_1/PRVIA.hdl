@@ -1,0 +1,9 @@
+CHIP PRVIA{
+	IN x,y;
+	OUT out;
+	
+	PARTS:
+	Not(in=x, out=Nx);
+	Not(in=y, out=Ny);
+	Or(a=Nx, b=Ny, out=out);
+}
