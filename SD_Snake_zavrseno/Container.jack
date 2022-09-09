@@ -1,0 +1,93 @@
+class Container {
+	// potrebno je znati size, prvi i zadnji element
+	field int size;
+	field PairListXY head;
+	field PairListXY tail;
+
+	// konstruktor za ovu klasu
+	constructor Container new(int xS, int yS){
+		let size = 1;
+		let head = PairListXY.new(xS, yS);
+		let tail = head;
+		return this;
+	}
+	
+	// dispose metoda
+	method void dispose() {
+		do head.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	// getter metode
+	method int getSize() {		return size;	}
+	method PairListXY getHead() {	return head;	}
+	method PairListXY getTail() {	return tail;	}
+
+	// povecaj size
+	method void incSize() {
+		let size = size + 1;
+		return;
+	}
+
+	// postavi novu glavu koja ce pokazivati na staru glavu
+	method void setHead(PairListXY newHead) {
+		do newHead.setNext(head);
+		let head = newHead;
+		return;
+	}
+
+	// push metoda (koristimo ju samo prilikom stvaranja pocetne zmije)
+	method void push(int xS, int yS){
+		var PairListXY element;
+		let element = PairListXY.new(xS, yS);
+		do tail.setNext(element);
+		let tail = element;
+		let size = size + 1;
+		return;
+	}
+
+	// postavi nove koordinate (xS, yS) glave, glavu prebaci da bude rep, a 
+	// ono na sto je glava prije pokazivala postaje nova glava
+	method void newHeadTail(int xS, int yS) {
+		var PairListXY newTail, newHead;
+		let newTail = head;
+		let newHead = head.getNext();
+		do newTail.setX(xS);
+		do newTail.setY(yS);
+		let head = newHead;
+		do tail.setNext(newTail);
+		let tail = newTail;
+		do tail.setNext(null);
+		return;
+	}
+
+	// provjerava nalazi li se dani xS i yS u containeru
+	method boolean contains(int xS, int yS){
+		var PairListXY cur;
+		let cur = head;
+		while(~(cur = null)){
+			if((cur.getX() = xS) & (cur.getY() = yS)){
+				return true;
+			}
+			let cur = cur.getNext();
+		}
+		return false;
+	}
+
+	// provjerava sadrzi li container par koordinata koji je jednak paru koordinata koji sadrzi tail	
+	method boolean doubleElement() {
+		var int x, y;
+		var PairListXY cur;
+		let cur = head;
+		let x = tail.getX();
+		let y = tail.getY();
+		while(~(cur = tail)){
+			if((cur.getX() = x) & (cur.getY() = y)){
+				return true;
+			}
+			let cur = cur.getNext();
+		}
+		return false;
+	}
+}
