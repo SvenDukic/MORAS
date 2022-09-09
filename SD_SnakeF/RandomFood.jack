@@ -1,0 +1,80 @@
+class RandomFood {
+	field int seed;
+	field int foodX, foodY;
+
+	// konstruktor za ovu klasu
+	constructor RandomFood new (int br) {
+		let seed = br;
+		return this;
+	}
+
+	// dispose metoda
+	method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+	}
+
+	// getter metode
+	method int getX() {	return foodX;	}
+	method int getY() {	return foodY;	}
+	method int getSeed() {	return seed;	}
+
+	// setter metode
+	method void setSeed() {	
+		let seed = rand();
+		return;
+	}
+
+	method void setX(int x) {
+		let foodX = x;
+		return;
+	}
+
+	method void setY(int y) {
+		let foodY = y;
+		return;
+	}
+
+	// pomocna modulo funkcija
+	method int fmodulo(int x, int y) {
+		var int d, r;
+		let d = x / y;
+		let r = x - (d * y);
+		return r;
+	}
+
+	
+	method void calcSeed() {
+		let seed = seed + 1;
+		if (seed = 32767) {	let seed = 0;	}
+		return;
+	}
+
+	method int rand() {
+		let seed = seed * 1920 + seed;
+		if (seed < 0) {	let seed = seed - 32767 - 1;	}
+		return seed;
+	}
+	
+	/* LCG: linear congruential generator
+	   X_n+1 = (a * X_n + c) mod m
+	   optimalni uvjeti: 
+	   1) m i c su relativno prosti
+	   2) a - 1 je djeljiv sa svim prostim faktorima od m
+	   3) a - 1 je djeljiv s 4 ako je m djeljiv s 4
+	   m je 64 i 30 (zbog zaslona) */
+	method int randNext(int a, int c, int m) {
+		var int fVar;
+		let fVar = (a * rand()) + c;
+		if (fVar < 0) {	let fVar = fVar - 32767 - 1;	}
+		let fVar = fmodulo(fVar, m);
+		return fVar;
+	}
+
+	// stvori hranu
+	method void createFood() {
+		do Screen.setColor(true);
+		do Screen.drawRectangle(foodX, foodY, foodX + 7, foodY + 7);
+		return;
+	}
+}
